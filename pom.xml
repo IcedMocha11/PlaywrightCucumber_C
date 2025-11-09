@@ -19,6 +19,8 @@
         <guava.version>33.5.0-jre</guava.version>
         <cucumber-java.version>7.31.0</cucumber-java.version>
         <cucumber-testng.version>7.31.0</cucumber-testng.version>
+        <cucumber-picocontainer.version>7.31.0</cucumber-picocontainer.version>
+        <slf4j-simple.version>2.0.17</slf4j-simple.version>
     </properties>
 
     <dependencies>
@@ -55,6 +57,21 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
             <version>${cucumber-testng.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-picocontainer -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>${cucumber-picocontainer.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j-simple.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

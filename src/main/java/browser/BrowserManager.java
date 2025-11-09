@@ -1,17 +1,18 @@
 package browser;
 
 import com.microsoft.playwright.*;
-
 import java.awt.*;
+import utils.*;
 
 public class BrowserManager {
+    Console console = new Console();
     public Playwright playwright; //used to create an instance of chromium
     public Page page; // is the single tab or window in the browser
     public BrowserContext context; // is the isolated browser session
     public Browser browser; //represents the browser instance
 
     public void setUp(){
-        System.out.println("Setting up Playwright");
+        console.setInfo("Setting up Playwright");
         //Get viewport size of screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
@@ -27,11 +28,11 @@ public class BrowserManager {
     }
 
     public void tearDown(){
-        System.out.println("Closing Playwright...");
+        console.setInfo("Closing Playwright...");
         if(page != null) page.close();
         if(browser != null) browser.close();
         if(playwright != null) playwright.close();
-        System.out.println("Playwright teardown complete!");
+        console.setInfo("Playwright teardown complete!");
 
     }
 
