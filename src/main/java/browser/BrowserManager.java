@@ -19,7 +19,13 @@ public class BrowserManager {
         int height = (int) screenSize.getHeight();
 
         playwright = Playwright.create();
-        browser =  playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        browser =  playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)); //use this if you dont want pause(); to work
+//        browser = playwright.chromium().launch(
+//                new BrowserType.LaunchOptions()
+//                        .setHeadless(false)
+//                        .setDevtools(true)
+//        ); //use this if you want pause(); to work
+
         context = browser.newContext(new Browser.NewContextOptions().setViewportSize(width, height));
         page = context.newPage();
         System.out.println("Playwright setup complete!");
