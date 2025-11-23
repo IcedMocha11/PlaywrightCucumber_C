@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageObjects.InputElements;
 import pageObjects.ActionElements;
@@ -13,6 +14,7 @@ import pageObjects.PageElements;
 import utils.Console;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertEquals;
 
 
 public class Homepage_Steps {
@@ -39,15 +41,23 @@ public class Homepage_Steps {
 
     }
 
-    @When("I click on the contact us button")
-    public void click_link(){
+    @When("I click on the contact us link")
+    public void click_link_contactUs(){
         browserManager.page = browserManager.context.waitForPage(() -> {
             browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("CONTACT US Contact Us Form")).click();
         });
 
         browserManager.page.bringToFront();
 
+    }
 
+    @When("I click on the login link")
+    public void click_link_Login(){
+        browserManager.page = browserManager.context.waitForPage(() -> {
+            browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("LOGIN PORTAL Login Portal Are")).click();
+        });
+
+        browserManager.page.bringToFront();
 
     }
 
@@ -67,17 +77,25 @@ public class Homepage_Steps {
 
     @And("User clicks {string} button")
     public void clickBtn(String btnName){
+        Locator button = actionElm.actionBtn(btnName);
 
-        actionElm.actionBtn(btnName).waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        if(actionElm.actionBtn(btnName).isVisible()) {
-            actionElm.actionBtn(btnName).click();
-            console.setPassed(btnName + " button was clicked! ");
+        // Wait for button to be visible
+        button.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
+        if(button.isVisible()){
+
+            browserManager.page.onceDialog(dialog -> {
+                console.setInfo("Alert appeared after clicking '" + btnName + "': " + dialog.message());
+                dialog.accept(); // Automatically accept the alert
+            });
+
+            button.click();
+            console.setPassed(btnName + " button was clicked!");
         } else {
-            console.setFailed("Error"+ btnName + "is not found","Check btn name");
+            console.setFailed("Error: " + btnName + " is not found", "Check field name");
         }
-
     }
+
 
     @And("User expects {string} data to be displayed")
     public void expectData(String expctdData){
@@ -94,6 +112,28 @@ public class Homepage_Steps {
         }
 
     }
+
+    @Then("User should see a validation succeeded alert")
+    public void userShouldSeeValidationSucceededAlert() {
+
+        console.setInfo("Waiting for validation alert...");
+
+        // Register dialog listener BEFORE triggering event
+        browserManager.page.onceDialog(dialog -> {
+            String alertMessage = dialog.message();
+            console.setInfo("Alert displayed: " + alertMessage);
+
+            try {
+                assertEquals("validation succeeded", alertMessage);
+                console.setPassed("Alert message validated successfully!");
+            } catch (AssertionError e) {
+                console.setFailed("Alert validation failed", alertMessage);
+            }
+
+            dialog.accept();
+        });
+    }
+
 
 
 
