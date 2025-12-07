@@ -1,5 +1,6 @@
 Feature: Webdriveruniversity ~ Contact Us Page
 
+  @Tc1
   Scenario: Verify message
 
     Given I navigate to the webdriveruniversity homepage
@@ -9,10 +10,10 @@ Feature: Webdriveruniversity ~ Contact Us Page
     And User inputs "test@gmail.com" data in "Email Address" field
     And User inputs "test" data in "Comments" field
     And User clicks "SUBMIT" button
-    Then User expects "Thank You for your Message!" data to be displayed
+    Then User expects "Thank You for your Messages!" data to be displayed
 
 
-
+    @Tc2
     Scenario Outline: Valid Login
 
       Given I navigate to the webdriveruniversity homepage
@@ -23,5 +24,5 @@ Feature: Webdriveruniversity ~ Contact Us Page
 #      Then User should see a validation succeeded alert
 
       Examples:
-        | username  | password     |
-        | webdriver | webdriver123 |
+        | username   | password     |
+        | webdrivers | webdriver123 |

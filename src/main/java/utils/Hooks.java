@@ -1,8 +1,5 @@
 package utils;
-import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.*;
 import browser.BrowserManager;
 
 public class Hooks {
@@ -35,7 +32,12 @@ public class Hooks {
 
     //Runs after each test
     @After
-    public void tearDown(){
+    public void tearDown(Scenario  scenario){
+        if(scenario.isFailed()){
+            byte[] screenshot = browserManager.takeScreenshot();
+            scenario.attach(screenshot, "image/png", "screenshot");
+        }
+
         browserManager.tearDown();
     }
 

@@ -108,10 +108,13 @@ public class Homepage_Steps {
 
         } catch (AssertionError | PlaywrightException e) {
             console.setFailed(expctdData + " was NOT displayed.", "Reason: " + e.getMessage());
-
+            throw e;
         }
 
+
+
     }
+
 
     @Then("User should see a validation succeeded alert")
     public void userShouldSeeValidationSucceededAlert() {

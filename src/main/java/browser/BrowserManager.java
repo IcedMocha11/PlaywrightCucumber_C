@@ -11,6 +11,13 @@ public class BrowserManager {
     public BrowserContext context; // is the isolated browser session
     public Browser browser; //represents the browser instance
 
+    public byte[] takeScreenshot(){
+        if (page != null){
+            return page.screenshot();
+        }
+        return new byte[0];
+    }
+
     public void setUp(){
         console.setInfo("Setting up Playwright");
         //Get viewport size of screen
