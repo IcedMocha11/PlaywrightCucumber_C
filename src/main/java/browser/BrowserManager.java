@@ -2,6 +2,15 @@ package browser;
 
 import com.microsoft.playwright.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import utils.*;
 
 public class BrowserManager {
@@ -10,6 +19,23 @@ public class BrowserManager {
     public Page page; // is the single tab or window in the browser
     public BrowserContext context; // is the isolated browser session
     public Browser browser; //represents the browser instance
+    public Properties properties;
+    private static final Logger logger = Logger.getLogger(BrowserManager.class.getName());
+
+    //***creates a path to a config file. If "config.path" isnt set, it defaults to a file located in "src/main/resources/config.properties
+    public BrowserManager(){
+        properties = new Properties();
+        Path configPath = Paths.get(System.getProperty("config.path",
+                Paths.get(System.getProperty("user.dir"), "src", "main", "resources",
+                        "config.properties").toString()));
+
+        try(InputStream input = Files.newInputStream(configPath)){
+            properties.load(input);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to load properties file!", e);
+        }
+
+    }
 
     public byte[] takeScreenshot(){
         if (page != null){
@@ -19,33 +45,40 @@ public class BrowserManager {
     }
 
     public void setUp(){
-        console.setInfo("Setting up Playwright");
+        logger.info("Setting up Playwright");
         //Get viewport size of screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         int height = (int) screenSize.getHeight();
 
         playwright = Playwright.create();
-        browser =  playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)); //use this if you dont want pause(); to work
-//        browser = playwright.chromium().launch(
-//                new BrowserType.LaunchOptions()
-//                        .setHeadless(false)
-//                        .setDevtools(true)
-//        ); //use this if you want pause(); to work
+        String browserType = properties.getProperty("browser", "chromium");
+        switch (browserType.toLowerCase()){
+            case "chromium":
+                browser =  playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                break;
+            case "firefox":
+                browser =  playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                break;
+            default:
+                logger.warning("Unsupported browser type: "+ browserType + " .Defaulting to chromium.");
+                browser =  playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                break;
+        }
 
         context = browser.newContext(new Browser.NewContextOptions().setViewportSize(width, height));
         page = context.newPage();
-        System.out.println("Playwright setup complete!");
+        logger.info("Playwright setup complete!");
 
 
     }
 
     public void tearDown(){
-        console.setInfo("Closing Playwright...");
+        logger.info("Closing Playwright...");
         if(page != null) page.close();
         if(browser != null) browser.close();
         if(playwright != null) playwright.close();
-        console.setInfo("Playwright teardown complete!");
+        logger.info("Playwright teardown complete!");
 
     }
 
