@@ -24,5 +24,5 @@ Feature: Webdriveruniversity ~ Contact Us Page
 #      Then User should see a validation succeeded alert
 
       Examples:
-        | username   | password     |
-        | webdrivers | webdriver123 |
+        | username  | password     |
+        | webdriver | webdriver123 |

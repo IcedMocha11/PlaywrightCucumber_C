@@ -71,7 +71,8 @@ public class TestRunner extends AbstractTestNGCucumberTests {
 
         //*Method to get thread count from properties file
         private static int getThreadCount(){
-            return Integer.parseInt(properties.getProperty("thread.count","1"));
+           // return Integer.parseInt(properties.getProperty("thread.count","1")); //* this line reads from the config.properties file
+            return Integer.parseInt(System.getProperty("thread.count", properties.getProperty("thread.count","1"))); //this line reads and overrides values from the terminal
         }
 
         //* DataProvider Method - used for parallel execution that allows multiple tests to run simultaneous
