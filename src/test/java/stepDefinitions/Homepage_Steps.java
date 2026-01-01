@@ -35,7 +35,7 @@ public class Homepage_Steps {
 
     @Given("I navigate to the webdriveruniversity homepage")
     public void nav_wbdrvruniversity(){
-          browserManager.page.navigate("https://www.webdriveruniversity.com/");
+          browserManager.getPage().navigate("https://www.webdriveruniversity.com/");
 
 
 
@@ -43,21 +43,21 @@ public class Homepage_Steps {
 
     @When("I click on the contact us link")
     public void click_link_contactUs(){
-        browserManager.page = browserManager.context.waitForPage(() -> {
-            browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("CONTACT US Contact Us Form")).click();
-        });
+        browserManager.setPage(browserManager.getContext().waitForPage(() -> {
+            browserManager.getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("CONTACT US Contact Us Form")).click();
+        }));
 
-        browserManager.page.bringToFront();
+        browserManager.getPage().bringToFront();
 
     }
 
     @When("I click on the login link")
     public void click_link_Login(){
-        browserManager.page = browserManager.context.waitForPage(() -> {
-            browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("LOGIN PORTAL Login Portal Are")).click();
-        });
+        browserManager.setPage(browserManager.getContext().waitForPage(() -> {
+            browserManager.getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("LOGIN PORTAL Login Portal Are")).click();
+        }));
 
-        browserManager.page.bringToFront();
+        browserManager.getPage().bringToFront();
 
     }
 
@@ -84,7 +84,7 @@ public class Homepage_Steps {
 
         if(button.isVisible()){
 
-            browserManager.page.onceDialog(dialog -> {
+            browserManager.getPage().onceDialog(dialog -> {
                 console.setInfo("Alert appeared after clicking '" + btnName + "': " + dialog.message());
                 dialog.accept(); // Automatically accept the alert
             });
@@ -122,7 +122,7 @@ public class Homepage_Steps {
         console.setInfo("Waiting for validation alert...");
 
         // Register dialog listener BEFORE triggering event
-        browserManager.page.onceDialog(dialog -> {
+        browserManager.getPage().onceDialog(dialog -> {
             String alertMessage = dialog.message();
             console.setInfo("Alert displayed: " + alertMessage);
 

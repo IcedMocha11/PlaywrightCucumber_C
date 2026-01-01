@@ -14,7 +14,7 @@ public class PageElements {
     }
 
     public Locator displayData(String expctdData) {
-        return browserManager.page.getByRole(AriaRole.HEADING,
+        return browserManager.getPage().getByRole(AriaRole.HEADING,
                 new Page.GetByRoleOptions().setName(expctdData));
     }
 

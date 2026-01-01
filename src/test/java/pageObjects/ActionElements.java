@@ -15,7 +15,7 @@ public class ActionElements {
 
 
     public Locator actionBtn(String btnName) {
-        return browserManager.page.getByRole(AriaRole.BUTTON,
+        return browserManager.getPage().getByRole(AriaRole.BUTTON,
                 new Page.GetByRoleOptions().setName(btnName));
     }
 

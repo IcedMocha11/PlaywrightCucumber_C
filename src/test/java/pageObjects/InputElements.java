@@ -14,7 +14,7 @@ public class InputElements {
     }
 
     public Locator inputField(String fieldName) {
-        return browserManager.page.getByRole(AriaRole.TEXTBOX,
+        return browserManager.getPage().getByRole(AriaRole.TEXTBOX,
                 new Page.GetByRoleOptions().setName(fieldName));
     }
 
